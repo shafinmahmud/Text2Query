@@ -22,7 +22,7 @@ public class Controller {
         Scanner in = new Scanner(System.in);
         //System.out.println("Enter the filepath : ");
         /// String csvFilePath = in.nextLine();
-        String csvFilePath = "C:\\Users\\SHAFIN\\Desktop\\markSheet.csv";
+        String csvFilePath = "C:\\Users\\SHAFIN\\Desktop\\microLab.csv";
 
         boolean choiceIsNotPicked = true;
 
@@ -35,11 +35,13 @@ public class Controller {
                     choiceIsNotPicked = false;
                     queryList = Converter.convertMarkSheet(csvFilePath);
                     System.out.println("number of query: "+queryList.size());
-
+                    break;
                 }
                 case 2: {
                     choiceIsNotPicked = false;
-                    //queryList = Converter.convertCourseGradeSheet(csvFilePath);
+                    queryList = Converter.convertCourseGradeSheet(csvFilePath);
+                    System.out.println("number of query: "+queryList.size());
+                    break;
                     
                 }
             }
