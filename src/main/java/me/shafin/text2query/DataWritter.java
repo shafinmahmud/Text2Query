@@ -25,19 +25,19 @@ public class DataWritter {
 
     public boolean writeData(List<String> dataList, String folderPath) {
         try {
-            File file = new File(folderPath + getFILE_NAME() + ".txt");
+            File file = new File(folderPath + getFILE_NAME() + ".sql");
 
             // if file doesnt exists, then create it
             if (!file.exists()) {
                 file.createNewFile();
             }
 
-            FileOutputStream fileOutputStream = new FileOutputStream(folderPath + getFILE_NAME() + ".txt");
+            FileOutputStream fileOutputStream = new FileOutputStream(folderPath + getFILE_NAME() + ".sql");
             try (OutputStreamWriter outputStreamWriter = new OutputStreamWriter(fileOutputStream, "UTF8")) {
                 //String singleString = "";
                 System.out.println(dataList.size());
                 for (String s : dataList) {
-                    outputStreamWriter.write(s);
+                    outputStreamWriter.write(s+System.lineSeparator());
                 }
 
             }
