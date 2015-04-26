@@ -15,7 +15,7 @@ import java.util.List;
  */
 public class Converter {
 
-    public static List<String> convertCourseGradeSheet(String filePath) {
+    public static List<String> convertCourseGradeSheet(String filePath, int inputFormat) {
 
         String csvFile = filePath;
         BufferedReader br = null;
@@ -59,8 +59,13 @@ public class Converter {
                     String query = "call sustord.find_student_info_id('" + dataSplit[0] + "',@reg" + dataSplit[0] + ");";
                     //System.out.println(query);
                     queryList.add(query);
-                    //String grade = dataSplit[2];
-                    String grade = GradeFormatter.marksToGrade(Double.parseDouble(dataSplit[2]));
+
+                    String grade;
+                    if (inputFormat == 1) {
+                        grade = GradeFormatter.marksToGrade(Double.parseDouble(dataSplit[2]));
+                    } else {
+                        grade = dataSplit[2];
+                    }
 
                     if (!grade.equals("n")) {
 
@@ -201,7 +206,7 @@ public class Converter {
                             query = "INSERT INTO `course_registration` (`student_info_id_fk`, `attend_year`, `attend_semester`, `syllabus_id_fk`, `approval`, `grade`) VALUES"
                                     + "(@reg" + registrationNo + "," + examYear + "," + semesterNumber + ",@syllabus_id,1,  '" + grade + "');";
                             queryList.add(query);
-                        }else{
+                        } else {
                             //System.out.println(courseCodeList.get(k - 2)+" "+dataSplit[k]);
                         }
 

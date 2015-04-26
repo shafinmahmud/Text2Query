@@ -33,15 +33,19 @@ public class Controller {
             switch (jobType) {
                 case 1: {
                     choiceIsNotPicked = false;
-                    csvFilePath = "C:\\Users\\SHAFIN\\Desktop\\markSheet.csv";
+                    csvFilePath = "D:\\QuiCk\\markSheet.csv";
                     queryList = Converter.convertMarkSheet(csvFilePath);
                     System.out.println("number of query: "+queryList.size());
                     break;
                 }
                 case 2: {
+                    System.out.println("Input data format? \n1.Marks or \n2.Grade ?");
+                    int dataFomat = in.nextInt();
+                    
                     choiceIsNotPicked = false;
-                    csvFilePath = "C:\\Users\\SHAFIN\\Desktop\\testInput.csv";
-                    queryList = Converter.convertCourseGradeSheet(csvFilePath);
+                    csvFilePath = "D:\\QuiCk\\courseGradeSheet.csv";
+                    
+                    queryList = Converter.convertCourseGradeSheet(csvFilePath, dataFomat);
                     System.out.println("number of query: "+queryList.size());
                     break;
                     
@@ -54,7 +58,7 @@ public class Controller {
         String outputPath = "D:\\";
 
         Scanner nameIn = new Scanner(System.in);
-        System.out.println("File name ? ");
+        System.out.println("Output file will be generated to D:\\ \n File name ? ");
         String fileName = nameIn.nextLine();
 
         if (!queryList.isEmpty()) {
