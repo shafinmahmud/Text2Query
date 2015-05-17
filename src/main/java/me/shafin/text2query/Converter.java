@@ -232,4 +232,100 @@ public class Converter {
         System.out.println(".......");
         return queryList;
     }
+
+    public static List<String> convertCourseGradeCorrection(String filePath) {
+        String csvFile = filePath;
+        BufferedReader br = null;
+        String line;
+        String cvsSplitBy = ",";
+
+        List<String> queryList = new ArrayList<>();
+        String query = "-- Scripting starts";
+        queryList.add(query);
+        System.out.println(query);
+
+        query = "SET SQL_SAFE_UPDATES = 0;";
+        queryList.add(query);
+        System.out.println(query);
+
+        try {
+
+            int lineCounter = 1;
+
+            br = new BufferedReader(new FileReader(csvFile));
+            while ((line = br.readLine()) != null) {
+                // use comma as separator
+
+                if (lineCounter > 1) {
+
+                    String[] dataSplit = line.split(cvsSplitBy);
+                    String registration_no = dataSplit[0];
+                    String dept = dataSplit[1];
+                    String degree = dataSplit[2];
+                    String degree_type = dataSplit[3];
+                    String batch = dataSplit[4];
+                    String course_code = dataSplit[5];
+                    String attend_semester = dataSplit[6];
+                    String grade = dataSplit[7];
+                    String title = "";
+
+                    int iter = 8;
+                    while (iter < dataSplit.length) {
+                        title += dataSplit[iter];
+                        iter++;
+                    }
+
+                    query = "call shafin_sustord.find_student_info_id('" + registration_no + "',@student_id);";
+                    queryList.add(query);
+                    System.out.println(query);
+
+                    query = "CALL shafin_sustord.find_student_batch_id('" + dept + "', '" + degree + "', '"
+                            + degree_type + "', '" + batch + "',@batch);";
+                    queryList.add(query);
+                    System.out.println(query);
+
+                    query = "CALL shafin_sustord.find_course_id('" + course_code + "', '" + title + "',@course_id);";
+                    queryList.add(query);
+                    System.out.println(query);
+
+                    query = "CALL shafin_sustord.find_syllabus_id(@batch,@course_id,@syllabus_id); ";
+                    queryList.add(query);
+                    System.out.println(query);
+
+                    query = "UPDATE `course_registration` "
+                            + "SET grade = '"+grade+"' "
+                            + "WHERE  student_info_id_fk = @student_id and attend_semester = " + attend_semester + " "
+                            + "and syllabus_id_fk = @syllabus_id;";
+                    queryList.add(query);
+                    System.out.println(query);
+                }
+                lineCounter++;
+
+            }
+
+            query = "SET SQL_SAFE_UPDATES = 1;";
+            queryList.add(query);
+            System.out.println(query);
+
+            query = "-- Scripting ends";
+            queryList.add(query);
+            System.out.println(query);
+
+        } catch (FileNotFoundException e) {
+            System.err.println("File not found " + e);
+        } catch (IOException e) {
+            System.out.println(e);
+        } finally {
+            if (br != null) {
+                try {
+                    br.close();
+                } catch (IOException e) {
+                }
+            }
+        }
+
+        System.out.println(".......");
+        return queryList;
+    }
+
 }
